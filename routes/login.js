@@ -1,13 +1,23 @@
 const express= require('express');
 const router=express.Router();
 const Login=require('../models/Login');
+const { body, validationResult } = require('express-validator');
+const bodyParser=require('body-parser');
 
-router.get('/',(req,res)=>{
-    console.log(req.body);
-    const login=Login(req.body);
-    login.save();
-    res.send(req.body);
-    
+router.post('/',bodyParser.json(),[
+    body('email','Enter a valid Email').isEmail(),
+     body('password','Enter a valid Password').isLength({min: 8}),
+],(req,res)=>{
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    Login.create({
+      email: req.body.email,
+      password: req.body.password,
+    }).then(login => res.json(login));
 })
 
 module.exports = router;
