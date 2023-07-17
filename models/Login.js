@@ -9,12 +9,12 @@ const LoginScheme = new Schema({
     password:{
         type:String,
         require:true,
-        unique:true
     },
     date:{
         type:Date,
         default:Date.now
     }
   });
-
-  module.exports =mongoose.model('Login',LoginScheme);
+  const LoginUser=mongoose.model('Login',LoginScheme);
+  LoginUser.createIndexes();
+  module.exports = LoginUser;
