@@ -16,5 +16,4 @@ const LoginScheme = new Schema({
     }
   });
   const LoginUser=mongoose.model('Login',LoginScheme);
-  LoginUser.createIndexes();
   module.exports = LoginUser;

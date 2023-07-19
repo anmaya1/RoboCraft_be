@@ -3,13 +3,14 @@ const express = require('express')
 
 connectToMongo();
 const app = express()
-const port = 3000
+const port = 5000
 
 //middleware
 app.use(express.json())
 
 //available routes
-app.use('/auth/login',require('./routes/login'))
+app.use('/admin/login',require('./routes/login'))
+
 app.get('/',(req,res)=>{
     
     res.send("server running")
