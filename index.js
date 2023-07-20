@@ -11,8 +11,7 @@ app.use(express.json())
 //available routes
 app.use('/admin/login',require('./routes/login'))
 
-app.get('/',(req,res)=>{
-    
+app.get('/',(req,res)=>{   
     res.send("server running")
 })
 

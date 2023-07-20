@@ -4,7 +4,9 @@ const Login=require('../models/Login');
 const { body, validationResult } = require('express-validator');
 const bodyParser=require('body-parser');
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
+const JWT_SECRET="Anmaya$Tech";
 
 router.post('/createadmin',bodyParser.json(),[
     body('email','Enter a valid Email').isEmail(),
@@ -29,7 +31,14 @@ router.post('/createadmin',bodyParser.json(),[
       email: req.body.email,
       password: secPass,
     })
-    res.json(admin)
+    const data={
+      admin:{
+        id:admin.id
+      }
+    }
+    const authToken=jwt.sign(data,JWT_SECRET);
+    res.json({"auth":authToken});
+
     }catch(error){
       console.error(error.message);
       res.status(500).send("Some error Occured");
