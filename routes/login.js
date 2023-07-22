@@ -5,6 +5,7 @@ const { body, validationResult } = require('express-validator');
 const bodyParser=require('body-parser');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const fetchuser=require('../middleware/fetchuser')
 
 const JWT_SECRET="Anmaya$Tech";
 
@@ -61,17 +62,17 @@ router.post('/loginadmin',bodyParser.json(),[
 
    const {email,password}=req.body;
    try{
-      let User=await Login.findOne({email});
-      if(!User){
+      let admin=await Login.findOne({email});
+      if(!admin){
         return res.status(400).json({error:"Use proper Credentials"});
       }
-      const passcomp=await bcrypt.compare(password,User.password);
+      const passcomp=await bcrypt.compare(password,admin.password);
       if(!passcomp){
         return res.status(400).json({error:"Use proper Credentials"});
       }
       const data={
-        User:{
-          id:User.id
+        admin:{
+          id:admin.id
         }
       }
       const authToken=jwt.sign(data,JWT_SECRET);
@@ -84,15 +85,15 @@ router.post('/loginadmin',bodyParser.json(),[
 
 //ROUTE 3: authentication Login endpoint
 
-router.post('/loginadmin',bodyParser.json(),[
-  body('email','Enter a valid Email').isEmail(),
-  body('password','Enter a valid Password').exists(),
- ], async (req,res)=>{
+router.post('/getadmin',fetchuser,bodyParser.json(),async (req,res)=>{
+   
    try {
-       
+       userId=req.admin.id;
+       const user=await Login.findById(userId).select("-password")
+       res.send(user);
    } catch (error) {
      console.error(error.message);
-     res.status(500).send("Internal server error Occured");
+     res.status(500).send("Internal server error Occured 1");
    }
  })
 module.exports = router;
