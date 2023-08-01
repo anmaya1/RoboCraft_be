@@ -10,7 +10,7 @@ router.post('/success', async (req, res) => {
       // After successful registration, send an email to the user
       const mailOptions = {
         from: 'anmayademo@gmail.com', // Sender address
-        to: 'rockingsudeep08@gmail.com', // Receiver address (user's email)
+        to: '1nt20cs1000.sudeep@nmit.ac.in', // Receiver address (user's email)
         subject: 'Registration Successful',
         text: 'Congratulations! Your registration was successful.',
       };
